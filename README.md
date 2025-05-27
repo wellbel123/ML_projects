@@ -1,6 +1,6 @@
 # 📊 Machine Learning Projects
 
-This repository contains selected ML projects from my portfolio:
+This repository contains selected ML projects:
 
 ---
 
@@ -10,4 +10,3 @@ A binary classification task: determine whether a session belongs to a specific 
 - Logistic Regression + CountVectorizer + custom features 
 - ROC-AUC: **0.9775**
 ---
-
