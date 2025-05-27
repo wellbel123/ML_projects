@@ -23,21 +23,6 @@ We use real session data from the [Kaggle competition](https://www.kaggle.com/c/
 
 ---
 
-## ⚙️ Project Structure
-catch_me_alice/
-├── data/
-│ └── raw/ ← original train/test + site dictionary
-├── outputs/ ← saved models, vectorizer, top-10 sets
-├── src/ ← all logic for features, vectorizing, modeling
-├── scripts/
-│ ├── train.py ← trains model and saves components
-│ └── predict.py ← loads model and predicts test probabilities
-├── requirements.txt
-└── README.md ← this file
-
-
----
-
 ## 🏗️ Approach
 
 1. **Feature Engineering**:
@@ -67,38 +52,3 @@ catch_me_alice/
 | Random Forest        | ~0.93                |
 
 ---
-
-## 📦 How to Run
-
-### 1. Install requirements
-
-'''
-pip install -r requirements.txt
-'''
-### 2. Train the model
-
-'''
-python scripts/train.py
-'''
-
-This will:
-- generate features
-- train model + scaler + vectorizer
-- save all to outputs/
-
-### 3. Run prediction on test set
-
-'''
-python scripts/predict.py
-''' 
-
-This will:
-- load the saved components
-- apply them to the test sessions
-- write submission.csv to outputs/
-
-## 🧩 Dependencies
-
-- pandas, numpy, scikit-learn
-- joblib, scipy
-- optionally: matplotlib/seaborn for EDA
