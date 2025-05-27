@@ -1,0 +1,15 @@
+vectorizer:
+  ngram_range: [1, 3]
+  max_features: 50000
+
+model:
+  type: logistic_regression
+  C: 1.0
+  random_state: 17
+  solver: liblinear
+
+features:
+  use_top10: true
+  use_alice_top10: true
+  use_cyclic_time: true
+  use_duration: true
