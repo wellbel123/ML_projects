@@ -7,7 +7,6 @@ import pickle
 
 import yaml
 
-
 from src.features import extract_features
 from src.vectorizer import sessions_to_text, fit_vectorizer
 from src.pipeline import build_model_pipeline
@@ -97,7 +96,9 @@ classifier, scaler = train_model(classifier, X_train_sparse, X_train_feats, y_tr
 # ---------- Evaluate ----------
 print("Evaluating...")
 roc_auc = evaluate_model(classifier, X_valid_sparse, X_valid_feats, y_valid, scaler)
-print(f"Validation ROC AUC: {roc_auc:.4f}")
+print()
+print(f"\033[1mValidation ROC AUC: {roc_auc:.4f}\033[0m")
+print()
 
 # ---------- Save model ----------
 print("Saving model...")

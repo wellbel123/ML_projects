@@ -7,15 +7,15 @@
 ## 🧠 Problem Statement
 
 This is a **binary classification task** where each sample is a user session (a sequence of visited websites with timestamps).  
-The goal is to **predict whether the session belongs to Alice**, a specific target user.
+The goal is to **predict whether the session belongs to Alice** - a specific target user.
 
-We use real session data from the [Kaggle competition](https://www.kaggle.com/c/catch-me-if-you-can-intruder-detection-through-webpage-session-tracking2).
+I used a data from the [Kaggle competition](https://www.kaggle.com/c/catch-me-if-you-can-intruder-detection-through-webpage-session-tracking2).
 
 ---
 
 ## 📊 Evaluation Metric
 
-**ROC-AUC** (Receiver Operating Characteristic - Area Under Curve) is used because:
+**ROC-AUC** is used because:
 
 - it's threshold-independent
 - handles class imbalance well
@@ -35,7 +35,7 @@ We use real session data from the [Kaggle competition](https://www.kaggle.com/c/
 
 2. **Text Modeling**:
    - Websites in a session are treated as a string sequence
-   - `CountVectorizer` used with 1–3 n-grams
+   - `CountVectorizer`
    - Combined with engineered numerical features
 
 3. **Modeling**:

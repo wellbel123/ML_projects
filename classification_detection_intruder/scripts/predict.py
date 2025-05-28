@@ -4,11 +4,9 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 import pandas as pd
 import pickle
-from pathlib import Path
 
 from src.features import extract_features
-from src.vectorizer import sessions_to_text, load_vectorizer, transform_text
-from src.modeling import evaluate_model
+from src.vectorizer import sessions_to_text, transform_text
 import joblib
 from scipy.sparse import hstack
 

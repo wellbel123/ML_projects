@@ -1,5 +1,3 @@
-# Makefile for Alice classification project
-
 # Path to your virtual environment
 VENV = venv
 PYTHON = $(VENV)/bin/python
@@ -17,7 +15,7 @@ help:
 
 # Create virtual environment
 venv:
-	python3 -m venv $(VENV)
+	test -f $(VENV)/bin/python || python3 -m venv $(VENV)
 	@echo "Virtual environment created in ./venv"
 
 # Install dependencies
@@ -38,3 +36,8 @@ predict:
 tree:
 	@echo "📁 Project structure:"
 	@find . -type d -not -path "*/\.*"
+
+# Run train+predict 
+run:
+	$(PYTHON) scripts/train.py && $(PYTHON) scripts/predict.py
+
