@@ -98,7 +98,7 @@ def plot_forecast_generic(y_train,
             resid = y_test.loc[y_pred.index] - y_pred
             stl = STL(resid, period=7)
             z_scores = (stl.fit().resid - resid.mean()) / resid.std()
-            anomalies = abs(z_scores) > 3
+            anomalies = abs(z_scores) > 2
         elif anomaly_method == "Isolation Forest":
             iso = IsolationForest(contamination=0.05)
             is_outlier = iso.fit_predict((y_test.loc[y_pred.index] - y_pred).values.reshape(-1, 1))
