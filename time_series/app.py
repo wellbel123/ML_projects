@@ -70,6 +70,7 @@ def load_data():
                 test = pd.read_csv(test_path, parse_dates=["Date"])
                 data[f"{freq}_{level}"] = (train, test)
             except:
+                st.write(os.getcwd())
                 stats = os.stat(train_path)
                 st.error(f"Failed to read: {train_path} {test_path}\n{json.dumps(stats)}")
                 break
