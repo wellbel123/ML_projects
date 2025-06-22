@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.set_page_config(page_title="info", page_icon="💡")
+st.set_page_config(page_title="Time Series Info", page_icon="💡")
 
 st.sidebar.success("Select a page above.")
 

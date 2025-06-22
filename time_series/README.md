@@ -67,11 +67,6 @@ For comparison these models I used *MAPE* (Mean Absolute Percentage Error) as th
 - It’s interpretable (shows average % error)
 - It was also recommended by the dataset author
 
-$$
-\text{MAPE} = \frac{1}{n} \sum_{t=1}^{n} \left| \frac{y_t - \hat{y}_t}{y_t} \right| \cdot 100\% \\
-\text{MAE} = \frac{1}{n} \sum_{t=1}^{n} \left| y_t - \hat{y}_t \right| \\
-\text{RMSE} = \sqrt{ \frac{1}{n} \sum_{t=1}^{n} (y_t - \hat{y}_t)^2 }
-$$
 
 | Model                | MAPE    | MAE     | RMSE   | 
 |----------------------|---------|---------|--------|
