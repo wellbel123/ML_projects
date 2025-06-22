@@ -11,7 +11,7 @@ import json
 
 
 st.set_page_config(page_title="Forecast", page_icon="📈")
-
+st.write('Extended information about the project on the left in the "Description" page')
 st.markdown("# Sales monitoring")
 st.write(
 

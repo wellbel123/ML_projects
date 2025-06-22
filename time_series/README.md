@@ -1,72 +1,49 @@
 # **Project: Time Series Forecasting and Outlier Detection**
 
-## Description and to-do list   
+[Streamlit Dashboard](https://descriptionpy-mcdwm5mwhgdr8tchazudzo.streamlit.app/Prediction)
 
-**1. Dataset analysis**
-- The project uses a [dataset](https://www.kaggle.com/datasets/samuelcortinhas/time-series-practice-dataset) from Kaggle:
-- The dataset contains simulated time series data covering 10 years (2010-2019).
-- Features:
-    - date
-    - store_id (7 unique stores)
-    - product_id (10 unique products)
-    - number_sold (target variable)
 
-- Train period: 2010-2018 (train.csv)
-- Test period: 2019 (test.csv)
+### 🔍 Overview
+This project focuses on forecasting sales and identifying anomalies in time series data using various statistical and machine learning methods. The primary tool for interaction is a Streamlit web application.
+
+### 📦 Dataset Description
+
+The [dataset](https://www.kaggle.com/datasets/samuelcortinhas/time-series-practice-dataset) used is from Kaggle. It contains simulated sales data across a 10-year period (2010–2019).
+
+**Features:**
+
+- date
+- store_id (7 unique stores)
+- product_id (10 unique products)
+- number_sold (target variable)
+- Train period: 2010–2018 and Test period: 2019 
 - There are no missing values in the dataset.
 
-**2. Prediction task**
-- Forecast number_sold on the test.csv period.
-- Multiple models will be compared, including:
-    - Classical statistical models (SARIMA)
-    - Decomposition models (Prophet)
-    - Linear Regression 
-    - Machine learning models (LightGBM)
-    - Neural networks (LSTM)
-    
-- The main evaluation metric: MAPE (Mean Absolute Percentage Error) — recommended by the dataset author.
+### 🎯 Goals
 
-**3. Outlier detection & confidence intervals**
+1. Forecast future values of number_sold for various data granularities (total, store, product).
+2. Compare model performance using forecasting metrics.
+3. Detect and visualize anomalies in forecast vs. actual values.
+4. Build an interactive Streamlit dashboard to explore results.
 
-- Build confidence intervals for predictions.
-- Monitor actual vs forecasted values.
-- Detect and alert outliers (when the actual value significantly deviates from the forecast).
-- Alert system logic:
-    - Compare forecast vs actual
-    - Apply threshold logic or z-score method to flag anomalies
+### ⚙️ Model Summary
 
-**4. Create Streamlit app**
+- Prophet (Meta): Decomposition-based, easy to implement, automatically detects seasonality/trends, and supports uncertainty intervals.
+- SARIMA: Traditional statistical model. Requires manual tuning and works poorly with unstable seasonality or missing data.
+- Linear Regression: Simple and interpretable, but needs manual feature engineering (lags, time encoding), and can't handle nonlinearity or autocorrelation.
+- LightGBM: A powerful ML model. Captures nonlinearities and handles categorical features, but lacks native time-awareness and needs careful feature engineering.
+- LSTM: Neural network built for sequential data. Captures long-term dependencies and nonlinear patterns, but is complex to train and less interpretable.
 
-- Build an interactive web application using Streamlit.
-- App functionality:
-    - Upload new data
-    - Generate forecasts
-    - Visualize historical data, forecasts, confidence intervals, and detected outliers
-    - Display evaluation metrics
-
-## Results 
-
-**5. Models Compared**
-We compared several forecasting models to evaluate their effectiveness on only one data granularity - total
-
- - I took Prophet (by Meta) model as a basic model, because there is : easy to implement handles, seasonality well,  provides uncertainty intervals by default. You don't need to manually station rows or search for parameters — the model automatically detects trends and seasonality.
-
- - SARIMA: a classic statistical approach suitable for stationary time series with seasonality. But it has some drawbacks: you need to manually configure the parameters for each granularity and slice separately, it does not cope well with unstable seasonality or sudden changes, omissions in the data.
-
-- Linear Regression: it's also can be used for time series data prediction. This model is easy to implement, the contribution of the signs is clear, but it doesn't work without manual feature generation (lags, sin/cos time, etc.), it does not cope well with nonlinear trends, it doesn't take into account autocorrelation and seasonality, unless you specifically add lags/dates.
-
-LightGBM: gradient boosting model, used here as a baseline ML model by converting time series into supervised learning format. This is strong ML model - captures non-linearities and important interactions well.It works with categorical criteria, it can take into account the date, lags, aggregates. It requires feature engineering (lags, moving average, etc.) It is not time-interpretable: it does not understand the time structure directly and also data leakage is a common problem for this model.
-
-LSTM: designed to handle sequences and capture long-term dependencies in time series data. Models time dependencies directly: remembers the context. It can capture complex patterns, non-linearities, and delays. Suitable for multidimensional time series, including sequences with dependencies. Long and complex setup (architecture, training, validation). It is difficult to interpret the results. It can be retrained without regularization or noise-resistant features.
-
-
-⚠️ Note: Currently, the deployed Streamlit app includes Prophet as the primary model. Other models are implemented separately and can be integrated later.
+### 📏 Evaluation Metrics
 
 For comparison these models I used *MAPE* (Mean Absolute Percentage Error) as the main evaluation metric:  
 - It’s scale-independent
 - It’s interpretable (shows average % error)
 - It was also recommended by the dataset author
 
+
+### 🧪 Models Compared
+To evaluate forecasting quality, we tested several models (for the total level):
 
 | Model                | MAPE    | MAE     | RMSE   | 
 |----------------------|---------|---------|--------|
@@ -78,24 +55,40 @@ For comparison these models I used *MAPE* (Mean Absolute Percentage Error) as th
 
 Despite the fact that logistic regression has shown the best results, but for simplicity, let's leave the prophet for now.
 
-**6. Multiple anomaly detection methods**
+### 🚨 Anomaly Detection Methods
 
-Time series often contain unusual patterns, spikes, or drops that deviate from expected behavior. Detecting these anomalies is crucial for monitoring and alerting systems. We compare several anomaly detection methods because they each bring a different perspective:
+Time series may contain unexpected patterns, spikes, or drops. We tested three anomaly detection strategies:
 
-- Prophet Confidence Interval (default)
+1. Prophet Confidence Interval (default)
 
-Uses upper/lower bounds generated by Prophet. An observation is flagged as an anomaly if it lies outside these bounds.
-In Prophet, confidence intervals (upper/lower bounds) are calculated based on bootstrapping and assumptions about the distribution of model errors. These intervals are not symmetrical with respect to the mean. They depend on the noise component of the model and the variability of seasonality and trend.
+- Flags anomalies when actual values fall outside Prophet’s predicted intervals.
+- Based on bootstrapped residuals and uncertainty in trend/seasonality components.
+- Simple, interpretable 
 
-- STL + Z-score
+2. STL + Z-Score
 
-Decomposes the time series into trend, seasonality, and residuals using Seasonal-Trend Decomposition (STL). Anomalies are flagged if the residual component exceeds a Z-score threshold (e.g., |Z| > 3). More flexible, good for detecting local spikes and dips regardless of forecast method.
+- Decomposes time series into trend/seasonality/residuals.
+- Flags points where the residual exceeds a Z-threshold (e.g., |Z| > 2).
+- Good for local outliers; flexible and method-agnostic.
 
-- Isolation Forest
+3. Isolation Forest
 
-A machine learning-based unsupervised method that isolates anomalies by recursively partitioning data. Model-agnostic, does not require prediction intervals, and works well on complex distributions.
+- Tree-based unsupervised anomaly detector.
+- No need for forecast or intervals; works directly on observed/predicted residuals.
+- Handles complex distributions, but less interpretable.
+- Using multiple methods helps balance sensitivity and robustness across different anomaly types.
 
-Using multiple methods allows us to compare robustness and sensitivity:
+⚠️ On our dataset, Prophet tends to be quite sensitive and flags many anomalies — which may reflect both its uncertainty estimates and potential model overfitting.
 
-- Some methods (like Prophet CI) might miss local spikes.
-- Others (like STL + Z or Isolation Forest) might capture subtler or statistical anomalies.
+➡️ Using multiple methods helps balance sensitivity and robustness across different anomaly types and datasets. The choice of method should consider the nature of your data, the expected anomalies, and your tolerance for false positives.
+
+
+### 💻 Streamlit App
+
+- An interactive dashboard was built with Streamlit for:
+- Selecting data granularity (total/store/product)
+- Choosing forecast horizon and anomaly method
+- Visualizing predictions, intervals, and detected outliers
+- Comparing performance metrics
+
+⚠️ Note: Although logistic regression had the best metrics, we selected Prophet as the primary model for deployment due to simplicity and confidence interval support.
