@@ -1,4 +1,14 @@
-# **Project: Time Series Forecasting and Outlier Detection**
+import streamlit as st
+
+st.set_page_config(page_title="info", page_icon="💡")
+
+st.sidebar.success("Select a page above.")
+
+st.write("Time Series Forecasting and Outlier Detection")
+
+st.markdown(
+"""
+   # **Project: Time Series Forecasting and Outlier Detection**
 
 ## Description and to-do list   
 
@@ -55,9 +65,9 @@ We compared several forecasting models to evaluate their effectiveness on only o
 
 - Linear Regression: it's also can be used for time series data prediction. This model is easy to implement, the contribution of the signs is clear, but it doesn't work without manual feature generation (lags, sin/cos time, etc.), it does not cope well with nonlinear trends, it doesn't take into account autocorrelation and seasonality, unless you specifically add lags/dates.
 
-LightGBM: gradient boosting model, used here as a baseline ML model by converting time series into supervised learning format. This is strong ML model - captures non-linearities and important interactions well.It works with categorical criteria, it can take into account the date, lags, aggregates. It requires feature engineering (lags, moving average, etc.) It is not time-interpretable: it does not understand the time structure directly and also data leakage is a common problem for this model.
+- LightGBM: gradient boosting model, used here as a baseline ML model by converting time series into supervised learning format. This is strong ML model - captures non-linearities and important interactions well.It works with categorical criteria, it can take into account the date, lags, aggregates. It requires feature engineering (lags, moving average, etc.) It is not time-interpretable: it does not understand the time structure directly and also data leakage is a common problem for this model.
 
-LSTM: designed to handle sequences and capture long-term dependencies in time series data. Models time dependencies directly: remembers the context. It can capture complex patterns, non-linearities, and delays. Suitable for multidimensional time series, including sequences with dependencies. Long and complex setup (architecture, training, validation). It is difficult to interpret the results. It can be retrained without regularization or noise-resistant features.
+- LSTM: designed to handle sequences and capture long-term dependencies in time series data. Models time dependencies directly: remembers the context. It can capture complex patterns, non-linearities, and delays. Suitable for multidimensional time series, including sequences with dependencies. Long and complex setup (architecture, training, validation). It is difficult to interpret the results. It can be retrained without regularization or noise-resistant features.
 
 
 ⚠️ Note: Currently, the deployed Streamlit app includes Prophet as the primary model. Other models are implemented separately and can be integrated later.
@@ -66,12 +76,20 @@ For comparison these models I used *MAPE* (Mean Absolute Percentage Error) as th
 - It’s scale-independent
 - It’s interpretable (shows average % error)
 - It was also recommended by the dataset author
+""")
 
-$$
-\text{MAPE} = \frac{1}{n} \sum_{t=1}^{n} \left| \frac{y_t - \hat{y}_t}{y_t} \right| \cdot 100\% \\
-\text{MAE} = \frac{1}{n} \sum_{t=1}^{n} \left| y_t - \hat{y}_t \right| \\
+st.latex(r"""
+\text{MAPE} = \frac{1}{n} \sum_{t=1}^{n} \left| \frac{y_t - \hat{y}_t}{y_t} \right| \cdot 100\%
+""")
+st.latex(r"""
+\text{MAE} = \frac{1}{n} \sum_{t=1}^{n} \left| y_t - \hat{y}_t \right|
+""")
+st.latex(r"""
 \text{RMSE} = \sqrt{ \frac{1}{n} \sum_{t=1}^{n} (y_t - \hat{y}_t)^2 }
-$$
+""")
+
+st.markdown(
+"""
 
 | Model                | MAPE    | MAE     | RMSE   | 
 |----------------------|---------|---------|--------|
@@ -104,3 +122,5 @@ Using multiple methods allows us to compare robustness and sensitivity:
 
 - Some methods (like Prophet CI) might miss local spikes.
 - Others (like STL + Z or Isolation Forest) might capture subtler or statistical anomalies.
+"""
+)

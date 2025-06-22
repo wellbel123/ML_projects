@@ -9,26 +9,36 @@ import plotly.graph_objects as go
 import os
 import json
 
-st.set_page_config(page_title="Forecast Dashboard", layout="wide")
-st.title("Forecast Visualization")
+
+st.set_page_config(page_title="Forecast", page_icon="📈")
+
+st.markdown("# Sales monitoring")
+st.write(
+
+    """
+    This page visualizes time series forecasts and highlights anomalies using different detection methods.
+
+    Use the sidebar to adjust the model, granularity, forecast horizon, and anomaly detection strategy.
+    """
+)
 
 horizon_map_days = {
-    "1 day": 1,
-    "7 days": 7,
-    "1 month": 30,
-    "3 months": 90,
-    "6 months": 180,
-    "1 year": 365
-}
+        "1 day": 1,
+        "7 days": 7,
+        "1 month": 30,
+        "3 months": 90,
+        "6 months": 180,
+        "1 year": 365
+    }
 
 horizon_map_months = {
-    "1 day": 1,
-    "7 days": 1,
-    "1 month": 1,
-    "3 months": 3,
-    "6 months": 6,
-    "1 year": 12
-}
+        "1 day": 1,
+        "7 days": 1,
+        "1 month": 1,
+        "3 months": 3,
+        "6 months": 6,
+        "1 year": 12
+    }
 
 # sidebar filters 
 st.sidebar.header("Configuration")
@@ -40,20 +50,20 @@ horizon_options = ["1 day", "7 days", "1 month", "3 months", "6 months", "1 year
 horizon_label = st.sidebar.selectbox("Forecast horizon", horizon_options)
 
 if granularity == "daily":
-    forecast_horizon = horizon_map_days[horizon_label]
-    forecast_freq = "D"
+        forecast_horizon = horizon_map_days[horizon_label]
+        forecast_freq = "D"
 else:
-    forecast_horizon = horizon_map_months[horizon_label]
-    forecast_freq = "MS"
+        forecast_horizon = horizon_map_months[horizon_label]
+        forecast_freq = "MS"
 
 # Select anomaly detection strategy:
 # - Prophet interval: flags points outside predicted confidence interval
 # - STL + Z-score: uses residual decomposition and standard score thresholding
 # - Isolation Forest: unsupervised model that isolates outliers using decision trees
 anomaly_method = st.sidebar.selectbox(
-    "Anomaly detection method",
-    ["Prophet interval", "STL + Z-score", "Isolation Forest"]
-)
+        "Anomaly detection method",
+        ["Prophet interval", "STL + Z-score", "Isolation Forest"]
+    )
 show_anomalies = st.sidebar.checkbox("Show anomalies", True)
 show_interval = st.sidebar.checkbox("Show confidence interval", True)
 start_date = st.sidebar.date_input("Start date (optional)", value='2018-10-01')
@@ -133,9 +143,9 @@ else:
     test_filtered = test_df[test_df[entity_col] == entity_id].copy().rename(columns={"Date": "ds"}).set_index("ds")
     forecast_df = forecast_dict.get(entity_id)
 
-    if forecast_df is None:
-        st.warning(f"No forecast for {entity_col} {entity_id}")
-        st.stop()
+if forecast_df is None:
+    st.warning(f"No forecast for {entity_col} {entity_id}")
+    st.stop()
 
 forecast_df = forecast_df.copy()
 if 'ds' in forecast_df.columns:
@@ -152,14 +162,14 @@ forecast_df = forecast_df.iloc[:forecast_horizon]
 forecast_df = forecast_df.dropna(subset=['y_pred'])
 
 fig = plot_forecast_generic(
-    y_train=train_filtered.set_index("ds")["y"],
-    y_test=test_filtered["number_sold"],
-    forecast_df=forecast_df,
-    model_name=f"{model_type} — {data_level.title()}{f' {entity_id}' if entity_id else ''}",
-    show_anomalies=show_anomalies,
-    interval_confidence=show_interval,
-    start_date=pd.to_datetime(start_date) if start_date else None,
-    anomaly_method=anomaly_method
-)
+        y_train=train_filtered.set_index("ds")["y"],
+        y_test=test_filtered["number_sold"],
+        forecast_df=forecast_df,
+        model_name=f"{model_type} — {data_level.title()}{f' {entity_id}' if entity_id else ''}",
+        show_anomalies=show_anomalies,
+        interval_confidence=show_interval,
+        start_date=pd.to_datetime(start_date) if start_date else None,
+        anomaly_method=anomaly_method
+    )
 
 st.plotly_chart(fig, use_container_width=True)

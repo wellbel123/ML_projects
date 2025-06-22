@@ -13,4 +13,6 @@ A binary classification task: determine whether a session belongs to a specific 
 ### 📈 [Time Series Forecasting and Outlier Detection](./time_series)
 
 A time series project for forecasting product sales and detecting anomalies using multiple models and methods + Streamlit App Realization 
+[The dashboard can be found here](https://timeseries-ujo7hv8fr49fbaqhyfhzev.streamlit.app/)
+
 ---
