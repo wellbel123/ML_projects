@@ -6,6 +6,8 @@ from prophet import Prophet
 from statsmodels.tsa.seasonal import STL
 from sklearn.ensemble import IsolationForest
 import plotly.graph_objects as go
+import os
+import json
 
 st.set_page_config(page_title="Forecast Dashboard", layout="wide")
 st.title("Forecast Visualization")
@@ -68,14 +70,16 @@ def load_data():
                 test = pd.read_csv(test_path, parse_dates=["Date"])
                 data[f"{freq}_{level}"] = (train, test)
             except:
-                pass
+                stats = os.stat(train_path)
+                st.error(f"Failed to read: {train_path} {test_path}\n{json.dumps(stats)}")
+                break
     return data
 
 data_dict = load_data()
 data_key = f"{granularity}_{data_level}"
 
 if data_key not in data_dict:
-    st.error(f"No data available for {data_key}")
+    # st.error(f"No data available for {data_key}")
     st.stop()
 
 train_df, test_df = data_dict[data_key]
