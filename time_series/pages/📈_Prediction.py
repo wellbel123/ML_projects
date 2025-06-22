@@ -47,7 +47,7 @@ granularity = st.sidebar.radio("Granularity", ["daily", "monthly"])
 model_type = st.sidebar.selectbox("Model", ["Prophet"])
 
 horizon_options = ["1 day", "7 days", "1 month", "3 months", "6 months", "1 year"]
-horizon_label = st.sidebar.selectbox("Forecast horizon", horizon_options)
+horizon_label = st.sidebar.selectbox("Forecast horizon", horizon_options, index=horizon_options.index("1 month"))
 
 if granularity == "daily":
         forecast_horizon = horizon_map_days[horizon_label]
