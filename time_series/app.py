@@ -58,29 +58,32 @@ show_anomalies = st.sidebar.checkbox("Show anomalies", True)
 show_interval = st.sidebar.checkbox("Show confidence interval", True)
 start_date = st.sidebar.date_input("Start date (optional)", value='2018-10-01')
 
+is_started_from_root = os.path.exists(".git")
+prefix = "time_series" if is_started_from_root else ""
+
 @st.cache_data
-def load_data():
+def load_data(prefix:str = ""):
+    if len(prefix) != 0 and not prefix.endswith('/'):
+        prefix += '/'
+
     data = {}
     for level in ["total", "store", "product"]:
         for freq in ["daily", "monthly"]:
-            train_path = f"data/df_{freq}_{level}_train.csv"
-            test_path = f"data/df_{freq}_{level}_test.csv"
+            train_path = f"{prefix}data/df_{freq}_{level}_train.csv"
+            test_path = f"{prefix}data/df_{freq}_{level}_test.csv"
             try:
                 train = pd.read_csv(train_path, parse_dates=["Date"])
                 test = pd.read_csv(test_path, parse_dates=["Date"])
                 data[f"{freq}_{level}"] = (train, test)
             except:
-                st.write(os.getcwd())
-                stats = os.stat(train_path)
-                st.error(f"Failed to read: {train_path} {test_path}\n{json.dumps(stats)}")
                 break
     return data
 
-data_dict = load_data()
+data_dict = load_data(prefix)
 data_key = f"{granularity}_{data_level}"
 
 if data_key not in data_dict:
-    # st.error(f"No data available for {data_key}")
+    st.error(f"No data available for {data_key}")
     st.stop()
 
 train_df, test_df = data_dict[data_key]
@@ -97,20 +100,22 @@ if entity_col:
     entity_id = st.selectbox(f"Select {entity_col}", unique_entities)
 
 @st.cache_data
-def load_forecasts():
+def load_forecasts(prefix:str = ""):
+    if len(prefix) != 0 and not prefix.endswith('/'):
+        prefix += '/'
     forecasts = {}
     for model in ["prophet"]:
         for freq in ["daily", "monthly"]:
             for level in ["total", "store", "product"]:
                 key = f"{model}_{freq}_{level}"
-                path = f"forecasts/{key}.pkl"
+                path = f"{prefix}forecasts/{key}.pkl"
                 try:
                     forecasts[key] = joblib.load(path)
                 except:
                     pass
     return forecasts
 
-forecast_all = load_forecasts()
+forecast_all = load_forecasts(prefix)
 forecast_key = f"{model_type.lower()}_{granularity}_{data_level}"
 
 if forecast_key not in forecast_all:
