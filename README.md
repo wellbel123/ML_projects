@@ -17,5 +17,5 @@ A time series project for forecasting product sales and detecting anomalies usin
 
 ---
 
-### 🔦 Churn Prediction (./churn_prediction)
+### 🔦 [🔦 Churn Prediction](./churn_prediction)
 This project analyzes customer behavior to predict churn using a dataset from Kaggle. It includes preprocessing, feature engineering, and training machine learning models to identify customers at risk of leaving.
